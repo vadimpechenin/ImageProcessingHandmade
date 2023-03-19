@@ -15,6 +15,10 @@ class TestUtils(unittest.TestCase):
         solutionFolder = CommonUtils.getSolutionFolder()
         return pathlib.Path(solutionFolder).joinpath("ImageProcessingHandmade").joinpath("test").joinpath("resultsData").resolve()
 
+    @staticmethod
+    def getMainResourcesFolder():
+        return CommonUtils.getMainResourcesFolder()
+
 
 if __name__ == "__main__":
     unittest.main()
