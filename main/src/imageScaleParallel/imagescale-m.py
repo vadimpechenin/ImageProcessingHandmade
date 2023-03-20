@@ -10,6 +10,10 @@
 # General Public License for more details.
 
 import sys
+
+from imageScaleParallel.argsClass import ArgsClass
+from imageScaleParallel.timeIt import timeit
+
 if sys.version_info < (3, 2):
     print("requires Python 3.2+ for concurrent.futures")
     sys.exit(1)
@@ -26,7 +30,7 @@ import Qtrac
 Result = collections.namedtuple("Result", "copied scaled name")
 Summary = collections.namedtuple("Summary", "todo copied scaled canceled")
 
-
+@timeit("now function-m")
 def main():
     size, smooth, source, target, concurrency = handle_commandline()
     Qtrac.report("starting...")
@@ -35,27 +39,34 @@ def main():
 
 
 def handle_commandline():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--concurrency", type=int,
-            default=multiprocessing.cpu_count(),
-            help="specify the concurrency (for debugging and "
-                "timing) [default: %(default)d]")
-    parser.add_argument("-s", "--size", default=400, type=int,
-            help="make a scaled image that fits the given dimension "
-                "[default: %(default)d]")
-    parser.add_argument("-S", "--smooth", action="store_true",
-            help="use smooth scaling (slow but good for text)")
-    parser.add_argument("source",
-            help="the directory containing the original .xpm images")
-    parser.add_argument("target",
-            help="the directory for the scaled .xpm images")
-    args = parser.parse_args()
-    source = os.path.abspath(args.source)
-    target = os.path.abspath(args.target)
-    if source == target:
-        args.error("source and target must be different")
-    if not os.path.exists(args.target):
-        os.makedirs(target)
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("-c", "--concurrency", type=int,
+                default=multiprocessing.cpu_count(),
+                help="specify the concurrency (for debugging and "
+                    "timing) [default: %(default)d]")
+        parser.add_argument("-s", "--size", default=400, type=int,
+                help="make a scaled image that fits the given dimension "
+                    "[default: %(default)d]")
+        parser.add_argument("-S", "--smooth", action="store_true",
+                help="use smooth scaling (slow but good for text)")
+        parser.add_argument("source",
+                help="the directory containing the original .xpm images")
+        parser.add_argument("target",
+                help="the directory for the scaled .xpm images")
+        args = parser.parse_args()
+        source = os.path.abspath(args.source)
+        target = os.path.abspath(args.target)
+        if source == target:
+            args.error("source and target must be different")
+        if not os.path.exists(args.target):
+            os.makedirs(target)
+    except:
+        size = 400
+        smooth = 0.75
+        source = "D:\\PYTHON\\Programms\\ImageProcessingHandmade\\main\\resources\\xpm"
+        target = "D:\\PYTHON\\Programms\\ImageProcessingHandmade\\test\\resultsData"
+        args = ArgsClass(size, smooth, source, target)
     return args.size, args.smooth, source, target, args.concurrency
 
 
@@ -105,7 +116,7 @@ def wait_for(futures):
 
 
 def scale_one(size, smooth, sourceImage, targetImage):
-    oldImage = Image.from_file(sourceImage)
+    oldImage = Image.Image.from_file(sourceImage)
     if oldImage.width <= size and oldImage.height <= size:
         oldImage.save(targetImage)
         return Result(1, 0, targetImage)

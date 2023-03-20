@@ -1,0 +1,14 @@
+#подсчет времени работы функций
+# Когда сам декоратор принимает аргументы
+#Декоратор2 - с входными аргументами
+from datetime import datetime
+def timeit(arg):
+    print(arg)
+    def outer(func):
+        def wrapper(*args, **kwargs):
+            start = datetime.now()
+            result = func(*args, **kwargs)
+            print(datetime.now() - start)
+            return result
+        return wrapper
+    return outer

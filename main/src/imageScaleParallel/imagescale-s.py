@@ -17,11 +17,12 @@ import sys
 import Image
 import Qtrac
 from imageScaleParallel.argsClass import ArgsClass
+from imageScaleParallel.timeIt import timeit
 
 Result = collections.namedtuple("Result", "copied scaled")
 Summary = collections.namedtuple("Summary", "todo copied scaled canceled")
 
-
+@timeit("now function-s")
 def main():
     size, smooth, source, target = handle_commandline()
     Qtrac.report("starting...")

@@ -1,3 +1,6 @@
+import multiprocessing
+
+
 class ArgsClass():
 
     def __init__(self,size,smooth,source,target):
@@ -5,3 +8,4 @@ class ArgsClass():
         self.smooth = smooth
         self.source = source
         self.target = target
+        self.concurrency = multiprocessing.cpu_count()

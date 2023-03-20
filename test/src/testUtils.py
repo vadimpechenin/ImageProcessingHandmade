@@ -20,6 +20,9 @@ class TestUtils(unittest.TestCase):
         return CommonUtils.getMainResourcesFolder()
 
     @staticmethod
+    def getMainResourcesXPMFolder():
+        return CommonUtils.getMainResourcesXPMFolder()
+    @staticmethod
     def getMultiprocessing():
         solutionFolder = CommonUtils.getSolutionFolder()
         return pathlib.Path(solutionFolder).joinpath("ImageProcessingHandmade").joinpath("main").joinpath("src").joinpath("imageScaleParallel").resolve()
