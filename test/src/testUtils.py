@@ -19,6 +19,11 @@ class TestUtils(unittest.TestCase):
     def getMainResourcesFolder():
         return CommonUtils.getMainResourcesFolder()
 
+    @staticmethod
+    def getMultiprocessing():
+        solutionFolder = CommonUtils.getSolutionFolder()
+        return pathlib.Path(solutionFolder).joinpath("ImageProcessingHandmade").joinpath("main").joinpath("src").joinpath("imageScaleParallel").resolve()
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -96,7 +96,6 @@ class Image:
             self.meta = {}
             self.pixels = create_array(width, height, background)
 
-
     @classmethod
     def from_file(Class, filename):
         return Class(filename=filename)
