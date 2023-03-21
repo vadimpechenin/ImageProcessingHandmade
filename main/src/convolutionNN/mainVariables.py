@@ -15,10 +15,4 @@ num_kernels = 16
 hidden_size = ((input_rows - kernel_rows) *
                (input_cols - kernel_cols)) * num_kernels
 
-kernels = 0.02 * np.random.random((kernel_rows * kernel_cols,
-                                   num_kernels)) - 0.01
-
-weights_1_2 = 0.2 * np.random.random((hidden_size,
-                                      num_labels)) - 0.1
-
 concurrency = multiprocessing.cpu_count()

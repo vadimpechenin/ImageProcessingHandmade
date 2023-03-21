@@ -2,14 +2,16 @@
 Применение сверточных слоев,
  стр. 221 Грокаем глубокое обучение
 Реализация сети, 28*28 входов, 2 скрытых слоя, 1 выходной слой
-Прогнозируем цифры MNIST
+Попытка распараллелить вычисления тестовых значений (для начала)
 """
+import concurrent.futures
+
 import copy
 
 import numpy as np, sys
 #Импорт класса нейронной сети
 from common.neuralNetworkClasses.forecastManyManyInOut import ForecastManyManyInOut
-from common.timeIt import timeit
+from common.timeIt import timeit, timeitNoPrint
 from trainClass import TrainClass
 from itertools import product
 
@@ -71,7 +73,7 @@ def get_image_section(layer, row_from, row_to, col_from, col_to):
     section = layer[:, row_from:row_to, col_from:col_to]
     return section.reshape(-1, 1, row_to - row_from, col_to - col_from)
 
-@timeit("Main Cycle")
+@timeitNoPrint("Main Cycle")
 def mainCycle():
 
     errorAll = [[0] * TrainClassObj.labels[0:1].shape[0] for i in range(mv.iterations)]#labels[0:1].shape[0]
@@ -88,7 +90,7 @@ def mainCycle():
         #test_correct_cnt = 0
 
         #Точность теста
-        testCycle()#test_images, test_labels, kernels, weights_1_2, test_correct_cnt
+        TrainClassObj.test_correct_cnt = testCycle()#test_images, test_labels, kernels, weights_1_2, test_correct_cnt
 
         errorAll_test[j] = TrainClassObj.test_correct_cnt / float(len(TrainClassObj.test_images))
 
@@ -168,23 +170,26 @@ def testFunction(i):#,test_images,test_labels, kernels, weights_1_2, test_correc
     layer_1 = tanh(kernel_output.reshape(es[0], -1))
     layer_2 = np.dot(layer_1, TrainClassObj.weights_1_2)
 
-    TrainClassObj.test_correct_cnt += int(np.argmax(layer_2) ==
+    """TrainClassObj.test_correct_cnt += int(np.argmax(layer_2) ==
+                            np.argmax(TrainClassObj.test_labels[i:i + 1]))"""
+    return int(np.argmax(layer_2) ==
                             np.argmax(TrainClassObj.test_labels[i:i + 1]))
-
     #return test_correct_cnt
 
-@timeit("Train Cycle")
-def trainCycle():#weights_1_2, kernels, correct_cnt, images, labels
+@timeitNoPrint("Train Cycle")
+def trainCycle():
     for i in range(int(len(TrainClassObj.images) / mv.batch_size)):
-        trainFunction(i)#weights_1_2, kernels, correct_cnt, images, labels
-    #return weights_1_2, kernels, correct_cnt
+        trainFunction(i)
 
-@timeit("Test Cycle")
-def testCycle():#test_images, test_labels, kernels, weights_1_2, test_correct_cnt
-    for i in range(len(TrainClassObj.test_images)):
-        testFunction(i)#, test_images, test_labels, kernels, weights_1_2, test_correct_cnt
-    #return test_correct_cnt
-
+@timeitNoPrint("Test Cycle")
+def testCycle():
+    test_correct_cnt = 0
+    i_list=[i for i in range(len(TrainClassObj.test_images))]
+    with concurrent.futures.ProcessPoolExecutor(max_workers=mv.concurrency) as executor:
+        for item, result in zip(i_list, executor.map(testFunction, i_list)):
+            test_correct_cnt += result
+    executor.shutdown()
+    return test_correct_cnt
 def plotResults(errorAll, errorAll_test):
     name = 'Сверточная сеть обучение'
     neuralObject.plot_accuracy(mv.iterations, errorAll,name)

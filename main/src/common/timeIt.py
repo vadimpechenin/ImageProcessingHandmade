@@ -12,3 +12,14 @@ def timeit(arg):
             return result
         return wrapper
     return outer
+
+def timeitNoPrint(arg):
+    #print(arg)
+    def outer(func):
+        def wrapper(*args, **kwargs):
+            start = datetime.now()
+            result = func(*args, **kwargs)
+            print("All time: " + str(datetime.now() - start))
+            return result
+        return wrapper
+    return outer
