@@ -31,8 +31,8 @@ class TrainClass():
             one_hot_labels[i][l] = 1
         self.labels = one_hot_labels
 
-        self.test_images, self.test_labels = (x_test[0:100].reshape(100, 28 * 28) / 255,
-                        y_test[0:100])
+        self.test_images, self.test_labels = (x_test[0:10000].reshape(10000, 28 * 28) / 255,
+                        y_test[0:10000])
 
         #test_images = x_test.reshape(len(x_test), 28 * 28) / 255
         one_hot_labels = np.zeros((len(y_test), 10))

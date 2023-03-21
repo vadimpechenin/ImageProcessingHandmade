@@ -25,36 +25,8 @@ import mainVariables as mv
 
 def main():
 
-    #getTestTrainSample()
     errorAll, errorAll_test = mainCycle()
     plotResults(errorAll, errorAll_test)
-
-def getTestTrainSample():
-    (x_train, y_train), (x_test, y_test) = mnist.load_data()
-    images, labels = (x_train[0:1000].reshape(1000, 28 * 28) / 255,
-                    y_train[0:1000])
-
-    one_hot_labels = np.zeros((len(labels), 10))
-    for i, l in enumerate(labels):
-        one_hot_labels[i][l] = 1
-    labels = one_hot_labels
-
-    test_images, test_labels = (x_test[0:100].reshape(100, 28 * 28) / 255,
-                    y_test[0:100])
-
-    #test_images = x_test.reshape(len(x_test), 28 * 28) / 255
-    one_hot_labels = np.zeros((len(y_test), 10))
-    for i, l in enumerate(test_labels):
-        one_hot_labels[i][l] = 1
-    test_labels = one_hot_labels
-
-    TrainClassObj.images = images
-    TrainClassObj.labels = labels
-    TrainClassObj.test_images = test_images
-    TrainClassObj.test_labels = test_labels
-    images = None
-    g = 0
-    #return images, labels, test_images, test_labels
 
 def tanh(x):
     return np.tanh(x)
