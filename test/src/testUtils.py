@@ -27,6 +27,17 @@ class TestUtils(unittest.TestCase):
         solutionFolder = CommonUtils.getSolutionFolder()
         return pathlib.Path(solutionFolder).joinpath("ImageProcessingHandmade").joinpath("main").joinpath("src").joinpath("imageScaleParallel").resolve()
 
+    @staticmethod
+    def getMultiprocessingSimple():
+        solutionFolder = CommonUtils.getSolutionFolder()
+        return pathlib.Path(solutionFolder).joinpath("ImageProcessingHandmade").joinpath("main").joinpath(
+            "src").joinpath("simpleExample").resolve()
+
+    @staticmethod
+    def getMultiprocessingConvolutionNN():
+        solutionFolder = CommonUtils.getSolutionFolder()
+        return pathlib.Path(solutionFolder).joinpath("ImageProcessingHandmade").joinpath("main").joinpath(
+            "src").joinpath("convolutionNN").resolve()
 
 if __name__ == "__main__":
     unittest.main()

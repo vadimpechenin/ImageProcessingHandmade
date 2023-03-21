@@ -8,7 +8,7 @@ def timeit(arg):
         def wrapper(*args, **kwargs):
             start = datetime.now()
             result = func(*args, **kwargs)
-            print(datetime.now() - start)
+            print("All time: " + str(datetime.now() - start))
             return result
         return wrapper
     return outer

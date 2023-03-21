@@ -13,11 +13,10 @@ import argparse
 import collections
 import math
 import os
-import sys
 import Image
-import Qtrac
+from common import Qtrac
 from imageScaleParallel.argsClass import ArgsClass
-from imageScaleParallel.timeIt import timeit
+from common.timeIt import timeit
 
 Result = collections.namedtuple("Result", "copied scaled")
 Summary = collections.namedtuple("Summary", "todo copied scaled canceled")

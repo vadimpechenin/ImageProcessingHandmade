@@ -12,7 +12,7 @@
 import sys
 
 from imageScaleParallel.argsClass import ArgsClass
-from imageScaleParallel.timeIt import timeit
+from common.timeIt import timeit
 
 if sys.version_info < (3, 2):
     print("requires Python 3.2+ for concurrent.futures")
@@ -24,8 +24,7 @@ import math
 import multiprocessing
 import os
 import Image
-import Qtrac
-
+from common import Qtrac
 
 Result = collections.namedtuple("Result", "copied scaled name")
 Summary = collections.namedtuple("Summary", "todo copied scaled canceled")

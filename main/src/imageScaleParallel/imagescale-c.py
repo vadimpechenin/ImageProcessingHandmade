@@ -14,10 +14,8 @@ import collections
 import math
 import multiprocessing
 import os
-import sys
 import Image
-import Qtrac
-
+from common import Qtrac
 
 Result = collections.namedtuple("Result", "todo copied scaled name")
 
@@ -101,7 +99,7 @@ def results():
         results.copied += result.copied
         results.scaled += result.scaled
         Qtrac.report("{} {}".format("copied" if result.copied else "scaled",
-                os.path.basename(result.name)))
+                                    os.path.basename(result.name)))
 results.todo = results.copied = results.scaled = 0
 
 

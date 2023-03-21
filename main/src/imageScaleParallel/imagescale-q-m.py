@@ -14,10 +14,8 @@ import collections
 import math
 import multiprocessing
 import os
-import sys
 import Image
-import Qtrac
-
+from common import Qtrac
 
 Result = collections.namedtuple("Result", "copied scaled name")
 Summary = collections.namedtuple("Summary", "todo copied scaled canceled")
